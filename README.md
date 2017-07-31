@@ -5,7 +5,9 @@
 [Blender](https://www.blender.org) uses bezier curves to control animations
 called FCurves. This library is a port of the evaluator. Given the same control
 point information, it should produce the same output (within a few points of
-numeric precision).
+numeric precision). This is verified by running Blender with the same curves
+and comparing the values. (:warning: though we're not getting 100% code
+coverage yet)
 
 Currently, only the bezier interpolation mode is fully supported.
 
