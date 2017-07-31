@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "license": "GPL",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:cov": "jest --coverage"
   },
   "author": {
     "name": "Max Goodman",
