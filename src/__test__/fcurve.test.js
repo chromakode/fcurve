@@ -9,12 +9,22 @@ function getBlenderData(fcurve, startFrame, endFrame) {
   const scriptInput = JSON.stringify({fcurve, start: startFrame, end: endFrame})
   const output = execSync(`blender -b -P ${scriptPath} -- '${scriptInput}'`, {
     stdio: ['ignore', 'pipe', 'ignore'],
-  })
-  const firstLine = output.toString('utf8').split('\n')[0]
+  }).toString('utf8')
+
+  const prefix = 'FCURVE:'
+  let outputLine
+  try {
+    outputLine = output.split('\n')
+      .find(l => l.startsWith(prefix))
+      .substr(prefix.length)
+  } catch (err) {
+    console.error('Unable to find output line:', err)
+    console.log(output)
+  }
 
   let sampledPoints
   try {
-    sampledPoints = JSON.parse(firstLine)
+    sampledPoints = JSON.parse(outputLine)
   } catch (err) {
     console.error('Unable to parse JSON:', err)
     console.log(firstLine)
