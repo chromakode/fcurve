@@ -1,0 +1,17 @@
+{
+  "name": "fcurve",
+  "description": "An evaluator for Blender's FCurve bezier curves",
+  "version": "0.0.1",
+  "license": "GPL",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": {
+    "name": "Max Goodman",
+    "email": "c@chromakode.com"
+  },
+  "devDependencies": {
+    "babel-jest": "^20.0.3",
+    "jest": "^20.0.4"
+  }
+}
