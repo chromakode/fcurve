@@ -1,8 +1,9 @@
 {
   "name": "fcurve",
   "description": "An evaluator for Blender's FCurve bezier curves",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "GPL",
+  "main": "src/fcurve.js",
   "scripts": {
     "test": "jest",
     "test:cov": "jest --coverage"
