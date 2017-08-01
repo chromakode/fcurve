@@ -27,7 +27,7 @@ function getBlenderData(fcurve, startFrame, endFrame) {
     sampledPoints = JSON.parse(outputLine)
   } catch (err) {
     console.error('Unable to parse JSON:', err)
-    console.log(firstLine)
+    console.log(outputLine)
   }
   return sampledPoints
 }
