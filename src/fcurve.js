@@ -30,17 +30,17 @@
 // Formatting and code organization has been kept as similar to the old code as possible.
 // Only bezier interpolation is fully supported. other modes could be added in the future.
 
-const SMALL = -1e-10
-const acos = Math.acos
-const cos = Math.cos
-const fabsf = Math.abs
-const sqrt = Math.sqrt
-const FLT_EPSILON = Number.EPSILON
+var SMALL = -1e-10
+var acos = Math.acos
+var cos = Math.cos
+var fabsf = Math.abs
+var sqrt = Math.sqrt
+var FLT_EPSILON = Number.EPSILON
 
-const FCURVE_EXTRAPOLATE_LINEAR = 'LINEAR'
-const BEZT_IPO_CONST = 'CONSTANT'
-const BEZT_IPO_LIN = 'LINEAR'
-const BEZT_IPO_BEZ = 'BEZIER'
+var FCURVE_EXTRAPOLATE_LINEAR = 'LINEAR'
+var BEZT_IPO_CONST = 'CONSTANT'
+var BEZT_IPO_LIN = 'LINEAR'
+var BEZT_IPO_BEZ = 'BEZIER'
 
 function IS_EQT(a, b, c) {
   return a > b ? a - b <= c : b - a <= c
@@ -60,9 +60,9 @@ function sqrt3d(x) {
  * Returns the index to insert at (data already at that index will be offset if replace is 0)
  */
 function binarysearch_bezt_index_ex(array, frame, threshold) {
-  const arraylen = array.length
-  let start = 0, end = arraylen
-  let loopbreaker = 0, maxloop = arraylen * 2
+  var arraylen = array.length
+  var start = 0, end = arraylen
+  var loopbreaker = 0, maxloop = arraylen * 2
 
   /* sneaky optimizations (don't go through searching process if...):
    *  - keyframe to be added is to be added out of current bounds
@@ -74,7 +74,7 @@ function binarysearch_bezt_index_ex(array, frame, threshold) {
   }
   else {
     /* check whether to add before/after/on */
-    let framenum
+    var framenum
 
     /* 'First' Keyframe (when only one keyframe, this case is used) */
     framenum = array[0].co[0]
@@ -99,8 +99,8 @@ function binarysearch_bezt_index_ex(array, frame, threshold) {
    */
   for (loopbreaker = 0; (start <= end) && (loopbreaker < maxloop); loopbreaker++) {
     /* compute and get midpoint */
-    const mid = Math.floor(start + ((end - start) / 2))  /* we calculate the midpoint this way to avoid int overflows... */
-    const midfra = array[mid].co[0]
+    var mid = Math.floor(start + ((end - start) / 2))  /* we calculate the midpoint this way to avoid int overflows... */
+    var midfra = array[mid].co[0]
 
     /* check if exactly equal to midpoint */
     if (IS_EQT(frame, midfra, threshold)) {
@@ -131,9 +131,9 @@ function binarysearch_bezt_index_ex(array, frame, threshold) {
  * This is to prevent curve loops.
  */
 function correct_bezpart(v1, v2, v3, v4) {
-  let len1, len2, len, fac
-  const h1 = []
-  const h2 = []
+  var len1, len2, len, fac
+  var h1 = []
+  var h2 = []
 
   /* calculate handle deltas */
   h1[0] = v1[0] - v2[0]
@@ -171,8 +171,8 @@ function correct_bezpart(v1, v2, v3, v4) {
 
 /* find root ('zero') */
 function findzero(x, q0, q1, q2, q3, o) {
-  let c0, c1, c2, c3, a, b, c, p, q, d, t, phi
-  let nr = 0
+  var c0, c1, c2, c3, a, b, c, p, q, d, t, phi
+  var nr = 0
 
   c0 = q0 - x
   c1 = 3.0 * (q1 - q0)
@@ -264,7 +264,7 @@ function findzero(x, q0, q1, q2, q3, o) {
 }
 
 function berekeny(f1, f2, f3, f4, o, b) {
-  let t, c0, c1, c2, c3, a
+  var t, c0, c1, c2, c3, a
   c0 = f1
   c1 = 3.0 * (f2 - f1)
   c2 = 3.0 * (f1 - 2.0 * f2 + f3)
@@ -279,18 +279,18 @@ function berekeny(f1, f2, f3, f4, o, b) {
 
 /* Calculate F-Curve value for 'evaltime' using BezTriple keyframes */
 function fcurve_eval_keyframes(fcurve, evaltime) {
-  let bezt = 0
-  let prevbezt = 0
-  let lastbezt = 0
-  const eps = 1e-8
-  const v1 = []
-  const v2 = []
-  const v3 = []
-  const v4 = []
-  const opl = []
-  let dx, fac, a, b
-  let cvalue = 0
-  const {points} = fcurve
+  var bezt = 0
+  var prevbezt = 0
+  var lastbezt = 0
+  var eps = 1e-8
+  var v1 = []
+  var v2 = []
+  var v3 = []
+  var v4 = []
+  var opl = []
+  var dx, fac, a, b
+  var cvalue = 0
+  var points = fcurve.points
 
   /* get pointers */
   a = points.length - 1
@@ -413,7 +413,9 @@ function fcurve_eval_keyframes(fcurve, evaltime) {
      *    - 0.00001 is too fine     -> Weird errors, like selecting the wrong keyframe range (see T39207), occur.
      *                                 This lower bound was established in b888a32eee8147b028464336ad2404d8155c64dd
      */
-    let {index: a, replace: exact} = binarysearch_bezt_index_ex(points, evaltime, 0.0001)
+    var bsResult = binarysearch_bezt_index_ex(points, evaltime, 0.0001)
+    var a = bsResult.index
+    var exact = bsResult.result
     //if (G.debug & G_DEBUG) console.debug("eval fcurve '%s' - %f => %u/%u, %d\n", fcu->rna_path, evaltime, a, fcu->totvert)
 
     if (exact) {
@@ -441,13 +443,13 @@ function fcurve_eval_keyframes(fcurve, evaltime) {
     }
     /* evaltime occurs within the interval defined by these two keyframes */
     else if ((points[prevbezt].co[0] <= evaltime) && (points[bezt].co[0] >= evaltime)) {
-      const begin = points[prevbezt].co[1]
-      const change = points[bezt].co[1] - points[prevbezt].co[1]
-      const duration = points[bezt].co[0] - points[prevbezt].co[0]
-      const time = evaltime - points[prevbezt].co[0]
+      var begin = points[prevbezt].co[1]
+      var change = points[bezt].co[1] - points[prevbezt].co[1]
+      var duration = points[bezt].co[0] - points[prevbezt].co[0]
+      var time = evaltime - points[prevbezt].co[0]
       // used in elastic interpolation mode (unimplemented)
-      //const amplitude = points[prevbezt].amplitude
-      //const period = points[prevbezt].period
+      //var amplitude = points[prevbezt].amplitude
+      //var period = points[prevbezt].period
 
       /* value depends on interpolation mode */
       if ((points[prevbezt].interpolation == BEZT_IPO_CONST) || (fcurve.discreteValues) || (duration == 0)) {
