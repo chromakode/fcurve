@@ -1,5 +1,10 @@
 # fcurve
 
+[![Build Status](https://img.shields.io/travis/chromakode/fcurve/master.svg?style=flat-square)](https://travis-ci.org/chromakode/fcurve)
+[![Coverage Status](https://img.shields.io/codecov/c/github/chromakode/fcurve/master.svg?style=flat-square)](https://codecov.io/github/chromakode/fcurve?branch=master)
+[![npm](https://img.shields.io/npm/v/fcurve.svg?style=flat-square)](https://www.npmjs.com/package/fcurve)
+[![npm](https://img.shields.io/npm/l/fcurve.svg?style=flat-square)](https://github.com/chromakode/fcurve/blob/master/LICENSE)
+
 <img src="./fcurve.png" width="400">
 
 [Blender](https://www.blender.org) uses bezier curves to control animations
