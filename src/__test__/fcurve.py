@@ -28,5 +28,4 @@ for input_point in input_points:
 fcurve.convert_to_samples(input_data['start'], input_data['end'])
 
 sampled_points = [list(p.co) for p in fcurve.sampled_points]
-print('FCURVE:', end='')
-json.dump(sampled_points, sys.stdout)
+print('FCURVE:' + json.dumps(sampled_points))
