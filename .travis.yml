@@ -1,14 +1,25 @@
+sudo: false
+
 language: node_js
 
 node_js:
   - "6"
 
+cache:
+  directories:
+    - $HOME/blender
+
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y blender
+  - if [ ! -d $HOME/blender/blender-2.78c-linux-glibc219-x86_64 ]; then
+      pushd $HOME/blender;
+      wget https://download.blender.org/release/Blender2.78/blender-2.78c-linux-glibc219-x86_64.tar.bz2;
+      tar -xf blender-2.78c-linux-glibc219-x86_64.tar.bz2;
+      ln -s blender-2.78c-linux-glibc219-x86_64/blender ./;
+      popd;
+    fi
 
 script:
-  - npm run test:cov
+  - PATH=$PATH:$HOME/blender npm run test:cov
 
 after_success:
   - npm install codecov
